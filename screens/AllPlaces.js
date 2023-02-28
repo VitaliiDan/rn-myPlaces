@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { useIsFocused, useRoute } from "@react-navigation/native";
 import { PlacesList } from "../components/places/PlacesList";
+import { fetchPlaces } from "../utils/database";
 
 export const AllPlaces = () => {
 	const [loadedPlaces, setLoadedPlaces] = useState([]);
@@ -10,11 +11,12 @@ export const AllPlaces = () => {
 	const isFocused = useIsFocused();
 
 	useEffect(() => {
-		if (isFocused && route.params) {
-			setLoadedPlaces(currentPlaces => [...currentPlaces, route.params.place])
+		if (isFocused) {
+			(async ()=>{
+				setLoadedPlaces([...await fetchPlaces()])
+			})()
 		}
-
-	}, [isFocused, route])
+	}, [isFocused])
 
 	return (
 		<PlacesList places={loadedPlaces}/>

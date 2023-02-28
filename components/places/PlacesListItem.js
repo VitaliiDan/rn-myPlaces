@@ -5,7 +5,7 @@ export const PlacesListItem = ({placeInfo, onSelect}) => {
 
 	return (
 		<Pressable
-			onPress={ onSelect }
+			onPress={() => onSelect(placeInfo.id) }
 			style={({ pressed }) => [styles.item, pressed && styles.pressed]}
 		>
 			<Image

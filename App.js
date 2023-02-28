@@ -1,16 +1,42 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useState } from "react";
+import { View } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { AllPlaces, AddPlace, Map } from "./screens";
+import * as SplashScreen from 'expo-splash-screen';
+
+import { init } from "./utils/database";
+import { AllPlaces, AddPlace, Map, PlaceDetails } from "./screens";
 import { IconButton } from "./components/ui/IconButton";
 import { Colors } from "./constants/colors";
 
 
 const Stack = createNativeStackNavigator();
+void SplashScreen.preventAutoHideAsync();
+
 export default function App() {
+	const [dbInitialized, setDbInitialized] = useState(false);
+
+	useEffect(() => {
+		(async () => {
+			await init()
+			await new Promise(resolve => setTimeout(resolve, 2000));
+			setDbInitialized(true)
+		})()
+	}, []);
+
+	const onLayoutRootView = useCallback(async () => {
+		if (dbInitialized) {
+			await SplashScreen.hideAsync();
+		}
+	}, [dbInitialized]);
+
+	if (!dbInitialized) {
+		return null
+	}
+
 	return (
-		<>
+		<View style={ {flex: 1} } onLayout={ onLayoutRootView }>
 			<StatusBar style="dark"/>
 			<NavigationContainer>
 				<Stack.Navigator
@@ -50,8 +76,13 @@ export default function App() {
 						name="Map"
 						component={ Map }
 					/>
+					<Stack.Screen
+						name='PlaceDetails'
+						component={ PlaceDetails }
+						options={{title: 'Loading Place...'}}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
-		</>
+		</View>
 	);
 }
