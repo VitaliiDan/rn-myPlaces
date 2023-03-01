@@ -20,7 +20,6 @@ export default function App() {
 	useEffect(() => {
 		(async () => {
 			await init()
-			await new Promise(resolve => setTimeout(resolve, 2000));
 			setDbInitialized(true)
 		})()
 	}, []);

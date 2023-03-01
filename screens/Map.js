@@ -23,6 +23,9 @@ export const Map = () => {
 	}
 
 	const selectLocationHandler = (event) => {
+		if (initialLocation) {
+			return
+		}
 		const lat = event.nativeEvent.coordinate.latitude
 		const lng = event.nativeEvent.coordinate.longitude
 
@@ -47,7 +50,7 @@ export const Map = () => {
 
 	useLayoutEffect(() => {
 
-		if (!initialLocation) {
+		if (initialLocation) {
 			return
 		}
 

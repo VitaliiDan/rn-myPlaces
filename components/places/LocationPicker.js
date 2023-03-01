@@ -67,25 +67,27 @@ export const LocationPicker = ({onPickLocation}) => {
 		/>)
 	}
 
-	return (<View>
-		<View style={ styles.mapPreview }>
-			{ locationPreview }
+	return (
+		<View>
+			<View style={ styles.mapPreview }>
+				{ locationPreview }
+			</View>
+			<View style={ styles.actions }>
+				<OutlineButton
+					icon='location'
+					onPress={ getLocationHandler }
+				>
+					Locate User
+				</OutlineButton>
+				<OutlineButton
+					icon='map'
+					onPress={ pickOnMapHandler }
+				>
+					Pick on Map
+				</OutlineButton>
+			</View>
 		</View>
-		<View style={ styles.actions }>
-			<OutlineButton
-				icon='location'
-				onPress={ getLocationHandler }
-			>
-				Locate User
-			</OutlineButton>
-			<OutlineButton
-				icon='map'
-				onPress={ pickOnMapHandler }
-			>
-				Pick on Map
-			</OutlineButton>
-		</View>
-	</View>)
+	)
 }
 
 const styles = StyleSheet.create({
